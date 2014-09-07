@@ -35,7 +35,7 @@ public class MyHashMap<K,V>{
 	 * @return
 	 */
 	public int indexFor(int hashcode){
-		return Math.abs(hashcode)%tables.length;
+		return (hashcode & 0x7fffffff)%tables.length;
 	}
 	/**
 	 * 获取键为key的值

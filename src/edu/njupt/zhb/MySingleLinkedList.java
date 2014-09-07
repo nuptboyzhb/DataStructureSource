@@ -6,6 +6,7 @@
  */
 package edu.njupt.zhb;
 
+import java.awt.HeadlessException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
@@ -84,16 +85,37 @@ public class MySingleLinkedList {
 		 while(pa!=null&&pb!=null){
 			 if(pa.data<pb.data){
 				 pc.next=pa;
-				 pc=pa;
+				 pc=pc.next;
 				 pa=pa.next;
 			 }else {
 				pc.next=pb;
-				pc=pb;
+				pc=pc.next;
 				pb=pb.next;
 			}
 		 }
 		 if(pa==null)pc.next=pb;
 		 if(pb==null)pc.next=pa;
+	}
+	
+	public Node mergeList(Node head1,Node head2){
+		 Node pa = head1.next;
+		 Node pb = head2.next;
+		 Node head = new Node();
+		 Node pc = head;
+		 while(pa!=null&&pb!=null){
+			 if(pa.data<pb.data){
+				 pc.next=pa;
+				 pc=pc.next;
+				 pa=pa.next;
+			 }else {
+				pc.next=pb;
+				pc=pc.next;
+				pb=pb.next;
+			}
+		 }
+		 if(pa==null)pc.next=pb;
+		 if(pb==null)pc.next=pa;
+		 return head;
 	}
 	/**
 	 * 反转单链表
@@ -108,11 +130,10 @@ public class MySingleLinkedList {
 		if(head==null){
 			return;
 		}
-		Node cur=head.next;
-		Node p;
-		while(cur.next!=null){
-			p=cur.next;
-			cur.next=p.next;
+		Node fristNode=head.next;//该节点始终指向原链表的第一个节点
+		while(fristNode.next!=null){
+			Node p=fristNode.next;
+			fristNode.next=fristNode.next.next;
 			p.next=head.next;
 			head.next=p;
 		}
@@ -210,7 +231,7 @@ public class MySingleLinkedList {
 	 */
 	public boolean isLoopList(Node head){
 		Node p1=head,p2=head;
-		while(p1!=null&&p2!=null){
+		while(p1!=null&&p2.next!=null){
 			p1=p1.next;
 			p2=p2.next.next;
 			if(p1==p2){
@@ -369,14 +390,45 @@ public class MySingleLinkedList {
 		}
 	}
 	
+	public Node sortLinkedList(Node head){
+		if(null == head || null == head.next){
+			return head;
+		}
+		int len = 0;
+		Node p = head;
+		while(p.next !=null){
+			p=p.next;
+			len++;
+		}
+		int mid = len/2;
+		Node left = head;
+		Node right = null;
+		Node p2 = head;
+		int count = 0;
+		while(p2!=null){
+			count++;
+			if(count == mid){
+				right = p2.next;
+				p2.next = null;
+				break;
+			}
+			p2 = p2.next;
+		}
+		Node head1 = sortLinkedList(left);
+		Node head2 = sortLinkedList(right);
+		mergeList(head1, head2,head);
+		return head;
+	}
+	
 	public void test(){
-//		Node headNode = new Node();
-//		int []datas = {32,45,8,2,1,4,5,87,57};
-//		for(int i=0;i<datas.length;i++){//依次将数据插入到链表中
-//			insert(headNode, datas[i],i+1);
-//		}
+		Node headNode = new Node();
+		int []datas = {32,45,8,2,1,4,5,87,57};
+		for(int i=0;i<datas.length;i++){//依次将数据插入到链表中
+			insert(headNode, datas[i],i+1);
+		}
+		Node resultNode = sortLinkedList(headNode.next);
 //		int removeData=0;
-//		displayList(headNode);
+		displayList(resultNode);
 //		remove(headNode,4,removeData);
 //		System.out.println("-------删除之后---------");
 //		displayList(headNode);
@@ -395,14 +447,14 @@ public class MySingleLinkedList {
 //		mergeList(headNode1, headNode2, node3);
 //		displayList(node3);
 		////////////////////////////////////////////
-		Node headNode = new Node();
-		int []datas = {32,45,8,2,1,4,5,87,57};
-		for(int i=0;i<datas.length;i++){//依次将数据插入到链表中
-			insert(headNode, datas[i],i+1);
-		}
-		//reverseList(headNode);
+//		Node headNode = new Node();
+//		int []datas = {32,45,8,2,1,4,5,87,57};
+//		for(int i=0;i<datas.length;i++){//依次将数据插入到链表中
+//			insert(headNode, datas[i],i+1);
+//		}
+//		reverseList(headNode);
 		//reverseListStack(headNode);
-		//displayList(headNode);
+//		displayList(headNode);
 		//System.out.println(getListLen(headNode));
 		//System.out.println(reGetKthNode2(headNode,2).data);
 		//System.out.println(isLoopList(headNode));
@@ -413,15 +465,15 @@ public class MySingleLinkedList {
 		//if(node!=null){
 		//	System.out.println(node.data);
 		//}
-		Node headNode2 = new Node();
-		int []datas2 = {9,8,7,6,51};
-		for(int i=0;i<datas2.length;i++){//依次将数据插入到链表中
-			insert(headNode2, datas2[i],i+1);
-		}
-		makeCrossingNode(headNode, headNode2);//人为制作一个相交点
-		System.out.println(isListCrossing(headNode, headNode2));
-		Node node2=getFristCrossingNode(headNode, headNode2);
-		System.out.println(node2.data);
+//		Node headNode2 = new Node();
+//		int []datas2 = {9,8,7,6,51};
+//		for(int i=0;i<datas2.length;i++){//依次将数据插入到链表中
+//			insert(headNode2, datas2[i],i+1);
+//		}
+//		makeCrossingNode(headNode, headNode2);//人为制作一个相交点
+//		System.out.println(isListCrossing(headNode, headNode2));
+//		Node node2=getFristCrossingNode(headNode, headNode2);
+//		System.out.println(node2.data);
 	}
 	public static void main(String[] args) {
 		new MySingleLinkedList().test();

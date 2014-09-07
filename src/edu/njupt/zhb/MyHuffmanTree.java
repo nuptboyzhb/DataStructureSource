@@ -9,10 +9,7 @@ package edu.njupt.zhb;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
-import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
-
-import org.w3c.dom.ls.LSException;
 
 /*
  *@author: ZhengHaibo  
