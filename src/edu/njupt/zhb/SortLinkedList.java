@@ -38,7 +38,7 @@ public class SortLinkedList {
  
 		// break up to two list
 		int middle = count / 2;
- 
+		
 		ListNode l = head, r = null;
 		ListNode p2 = head;
 		int countHalf = 0;
